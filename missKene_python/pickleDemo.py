@@ -6,12 +6,12 @@ student = {
     "department": "Data Science"
 }
 
-# Serialization
-with open("student.pk1", "wb") as file:
+# Serialization / Pickling
+with open("student.pk", "wb") as file:
     pickle.dump(student, file)
     
-# Deserialization
-with open("student.pk1", "rb") as file:
+# Deserialization / Unpickling
+with open("student.pk", "rb") as file:
     data = pickle.load(file)
     
 print(data)
