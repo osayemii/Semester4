@@ -21,8 +21,8 @@ for review in reviews:
         polarity = sentence.sentiment.polarity
         # print(polarity)
         text = str(sentence).lower()
-        # print(sentence)
-        print(sentiments)
+        # print(text)
+        
         for aspect in aspects:
             if aspect.lower() in text:
                 if polarity > 0:
@@ -32,5 +32,5 @@ for review in reviews:
                 else:
                     sentiments[aspect]["neutral"] += 1
 
-# for aspect, counts in sentiments.items():
-#     print(f"{aspect}: {counts}")
+for aspect, counts in sentiments.items():
+    print(f"{aspect}: {counts}")

@@ -18,7 +18,7 @@ reviews = [
     "Loved every moment"
 ]
 
-sentiments = [1,0,0,1,0,1,0,1,0,1]
+Y = [1,0,0,1,0,1,0,1,0,1]
 
 # TF-IDF Vectorization
 vectorizer = TfidfVectorizer()
@@ -26,7 +26,7 @@ X = vectorizer.fit_transform(reviews)
 
 # Split data
 X_train, X_test, y_train, y_test = train_test_split(
-    X, sentiments, test_size=0.2, random_state=42
+    X, Y, test_size=0.3, random_state=42
 )
 
 # Train Logistic Regression
