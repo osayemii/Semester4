@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sales Inventory System</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        <h1>Sales Inventory Management System</h1>
+        <img src="{{ url_for('static',filename='images/logo.png') }}" width="200">
+        <p>Welcome to the Sales Inventory Management System.</p>
+        <a href="/categories">View Product Categories</a>
+        <br>
+        <a href="/add_item">Add New Item</a>
+        <br>
+        <a href="/create_order">Create Customer Order</a>
+    </body>
+</html>

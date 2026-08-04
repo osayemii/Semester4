@@ -1,0 +1,16 @@
+{
+    "python.REPL.enableREPLSmartSend": false,
+    "cSpell.words": [
+        "ACNS"
+    ],
+    "editor.formatOnType": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false,
+    "editor.autoIndent": "none",
+    "[html]": {
+        "editor.formatOnType": false,
+        "editor.formatOnSave": false,
+        "editor.formatOnPaste": false,
+        "editor.autoIndent": "none"
+    }
+}

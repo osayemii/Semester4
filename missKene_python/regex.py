@@ -38,12 +38,12 @@ else:
 # -----------------------------------------
     
 emails = [
-    "jo2hn@gmail.com",
+    "jo2hn@gmailcom",
     "mary@yahoo.com",
     "student.com"
 ]
 
-pattern = r"^\w+@\w+.\w+$"
+pattern = r"^\w+@\w+\.\w+$"
 
 for email in emails:
     if re.search(pattern, email):
@@ -81,3 +81,14 @@ listOFWords = re.split(r"\s+", strl1)
 listOFWords = re.split(r"@\w+.", strl2)
 
 print(listOFWords)
+
+
+# ---------------------------------------------
+import re
+str1 = "Java was first released in 1995.\n PHP is an open-source programming language created in 1990."
+string_pattern = r"\d{4}"
+regex_pattern = re.compile(string_pattern)
+print(type(regex_pattern))
+result = regex_pattern.findall(str1)
+result = re.findall(r'\d{4}', str1)
+print(result)

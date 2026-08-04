@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Item</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <h1>Add New Inventory Item</h1>
+    <form action="/add_item" method="POST">
+        <label>Item Name:</label>
+        <input type="text" name="item_name">
+        <br><br>
+        <label>Category:</label>
+        <input type="text" name="category">
+        <br><br>
+        <label>Price:</label>
+        <input type="text" name="price">
+        <br><br>
+        <label>Quantity:</label>
+        <input type="text" name="quantity">
+        <br><br>
+        <input type="submit" value="Add Item">
+    </form>
+</body>
+
+</html>
