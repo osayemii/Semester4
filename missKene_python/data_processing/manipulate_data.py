@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('data_processing/product_Sales.csv')
+df = pd.read_csv('data_processing/Product_Sales.csv')
 # print(df)
 
 # Create Discount Column
