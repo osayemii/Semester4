@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Real Estate Marketing{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <a href="{{ url_for('home') }}" class="logo">Osayemi's Real Estate Marketing</a>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Real Estate Marketing System</p>
+    </footer>
+</body>
+</html>

@@ -1,70 +1,71 @@
-from flask import Flask
-import mysql.connector
+"""Flask public web catalogue for buyers.
+
+Shows available listings, lets buyers search/filter, view a property's
+detail page with its image and agent contact, and send an enquiry.
+"""
+import os
+
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+
+import db
 
 app = Flask(__name__)
-
-db_host = 'localhost'
-db_user = 'root'
-db_password = ''
-db_database = 'real_estate'
-
-
-def get_properties():
-    mysqldb = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_database)
-    mycursor = mysqldb.cursor()
-    mycursor.execute('SELECT Property_id,Name,Description,Address,Size,Country,State,Price FROM estate_info')
-    rows = mycursor.fetchall()
-    mysqldb.close()
-    return rows
+app.secret_key = 'dev-secret-key-change-in-production'
 
 
 @app.route('/')
 def home():
-    return '''<h1 style="color: blue; font-family: sans-serif">Welcome to Real Estate Marketting!!!</h1>
-<a href="/properties"><button style="border: none; padding: 15px; border-radius: 10px; font-weight: bold; background-color: skyue;">Properties</button></a>'''
+    country = request.args.get('country', '').strip()
+    state = request.args.get('state', '').strip()
+    min_price = request.args.get('min_price', '').strip()
+    max_price = request.args.get('max_price', '').strip()
+
+    properties = db.search_properties(
+        country=country or None,
+        state=state or None,
+        min_price=float(min_price) if min_price.replace('.', '', 1).isdigit() else None,
+        max_price=float(max_price) if max_price.replace('.', '', 1).isdigit() else None,
+    )
+
+    return render_template('index.html', properties=properties, filters=request.args)
 
 
-@app.route('/properties')
-def preview():
-    rows = get_properties()
+@app.route('/property/<property_id>')
+def property_detail(property_id):
+    property_ = db.get_property(property_id)
+    if not property_:
+        return "Property not found", 404
+    image = db.get_image(property_id)
+    agent = db.get_agent(property_.get('Agent_id'))
+    return render_template('detail.html', property=property_, image=image, agent=agent)
 
-    table_rows = ''
-    for property_id, name, description, address, size, country, state, price in rows:
-        table_rows += f'''
-        <tr>
-            <td>{property_id}</td>
-            <td>{name}</td>
-            <td>{description}</td>
-            <td>{address}</td>
-            <td>{size}</td>
-            <td>{country}</td>
-            <td>{state}</td>
-            <td>{price}</td>
-        </tr>'''
 
-    return f'''
-    <html>
-    <head>
-        <title>Real Estate Marketing</title>
-        <style>
-            body {{ font-family: Arial, sans-serif; margin: 40px; }}
-            table {{ border-collapse: collapse; width: 100%; }}
-            th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; }}
-            th {{ background: #f2f2f2; }}
-        </style>
-    </head>
-    <body>
-        <h1>Real Estate Marketing</h1>
-        <table>
-            <tr>
-                <th>Property ID</th><th>Name</th><th>Description</th><th>Address</th>
-                <th>Size</th><th>Country</th><th>State</th><th>Price</th>
-            </tr>
-            {table_rows}
-        </table>
-    </body>
-    </html>
-    '''
+@app.route('/property/<property_id>/image')
+def property_image(property_id):
+    image = db.get_image(property_id)
+    if not image or not os.path.isfile(image['image_path']):
+        return "Image not found", 404
+    return send_file(image['image_path'])
+
+
+@app.route('/property/<property_id>/enquire', methods=['POST'])
+def submit_enquiry(property_id):
+    property_ = db.get_property(property_id)
+    if not property_:
+        return "Property not found", 404
+
+    buyer_name = request.form.get('buyer_name', '').strip()
+    buyer_email = request.form.get('buyer_email', '').strip()
+    message = request.form.get('message', '').strip()
+
+    if not buyer_name or not buyer_email or '@' not in buyer_email:
+        flash("Please provide a valid name and email address.")
+        return redirect(url_for('property_detail', property_id=property_id))
+
+    db.add_enquiry(property_id, buyer_name, buyer_email, message)
+    flash("Your enquiry has been sent. The agent will contact you soon.")
+    return redirect(url_for('property_detail', property_id=property_id))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

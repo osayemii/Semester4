@@ -12,8 +12,10 @@ def Delete():
     conn = db.get_connection()
     cursor = conn.cursor()
     try:
-        # child row first, otherwise the foreign key blocks the delete
+        # child rows first, otherwise the foreign keys block the delete
         cursor.execute("DELETE FROM estate_image WHERE Property_id=%s", (property_id,))
+        cursor.execute("DELETE FROM enquiries WHERE Property_id=%s", (property_id,))
+        cursor.execute("DELETE FROM viewings WHERE Property_id=%s", (property_id,))
         cursor.execute("DELETE FROM estate_info WHERE Property_id=%s", (property_id,))
         conn.commit()
         messagebox.showinfo("Information",

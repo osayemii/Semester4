@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Available Properties{% endblock %}
+
+{% block extra_head %}
+<script>
+    // Keep the listings current without a manual refresh, but don't
+    // interrupt someone who is mid-search.
+    setInterval(function () {
+        var tag = document.activeElement.tagName;
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+            window.location.reload();
+        }
+    }, 30000);
+</script>
+{% endblock %}
+
+{% block content %}
+    <h1>Available Properties</h1>
+    <p class="listing-count">{{ properties|length }} propert{{ "y" if properties|length == 1 else "ies" }} available</p>
+
+    <form class="search-form" method="get" action="{{ url_for('home') }}">
+        <input type="text" name="country" placeholder="Country" value="{{ filters.get('country', '') }}">
+        <input type="text" name="state" placeholder="State" value="{{ filters.get('state', '') }}">
+        <input type="number" name="min_price" placeholder="Min price" value="{{ filters.get('min_price', '') }}">
+        <input type="number" name="max_price" placeholder="Max price" value="{{ filters.get('max_price', '') }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if properties %}
+        <div class="property-grid">
+            {% for p in properties %}
+                <a class="property-card" href="{{ url_for('property_detail', property_id=p.Property_id) }}">
+                    {% if p.image_path %}
+                        <img src="{{ url_for('property_image', property_id=p.Property_id) }}" alt="{{ p.Name }}">
+                    {% else %}
+                        <div class="no-image">No image</div>
+                    {% endif %}
+                    <div class="property-card-body">
+                        <h3>{{ p.Name }}</h3>
+                        <p class="price">&#8358;{{ "{:,.2f}".format(p.Price) }}</p>
+                        <p>{{ p.Size }} sqm &middot; {{ p.State }}, {{ p.Country }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No properties match your search.</p>
+    {% endif %}
+{% endblock %}

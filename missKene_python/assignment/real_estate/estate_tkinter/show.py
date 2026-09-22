@@ -13,8 +13,8 @@ def Show():
         state.listdisplay.delete(child)
 
     cursor.execute(
-        'SELECT Property_id, Name, Description, Address, Size, Country, State, Price '
-        'FROM estate_info'
+        'SELECT Property_id, Name, Description, Address, Size, Country, State, Price, '
+        'Status FROM estate_info ORDER BY Date_listed DESC'
     )
     for record in cursor.fetchall():
         state.listdisplay.insert("", "end", values=record)

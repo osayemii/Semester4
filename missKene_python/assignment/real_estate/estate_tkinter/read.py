@@ -12,8 +12,8 @@ def Read():
     conn = db.get_connection()
     cursor = conn.cursor()
     try:
-        sql = ('SELECT Property_id, Name, Description, Address, Size, Country, State, Price '
-               'FROM estate_info WHERE Property_id=%s')
+        sql = ('SELECT Property_id, Name, Description, Address, Size, Country, State, '
+               'Price, Status FROM estate_info WHERE Property_id=%s')
         cursor.execute(sql, (property_id,))
         record = cursor.fetchone()
 
@@ -21,9 +21,10 @@ def Read():
             messagebox.showwarning("Not found", f"No property with ID {property_id}.")
             return
 
-        for entry, value in zip(state.entries, record):
+        for entry, value in zip(state.entries[:-1], record[:-1]):
             entry.delete(0, END)
             entry.insert(0, value)
+        state.entries[-1].set(record[-1] or 'available')
         state.entries[0].focus_set()
 
         # fetch this property's image path (if any)

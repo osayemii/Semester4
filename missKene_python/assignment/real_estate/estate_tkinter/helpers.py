@@ -1,14 +1,15 @@
 """Small helpers shared by the CRUD modules."""
 from tkinter import END
-import os
 
 import state
 
 
 def clear_form():
-    """Empty all entry boxes, reset the image selection, focus first field."""
-    for entry in state.entries:
+    """Empty all entry boxes, reset status/image, focus first field."""
+    for entry in state.entries[:-1]:
         entry.delete(0, END)
+    status_combo = state.entries[-1]
+    status_combo.set('available')
     state.entries[0].focus_set()
 
     state.selected_image = None
@@ -17,10 +18,10 @@ def clear_form():
 
 
 def get_form_values():
-    """Return the 8 entry values in table order as a tuple."""
+    """Return the 9 entry values (8 fields + status) in table order."""
     return tuple(entry.get() for entry in state.entries)
 
 
 def set_image_label(path):
-    """Show just the filename of a selected/loaded image on the label."""
-    state.image_label.config(text=os.path.basename(path))
+    """Show the full file location of a selected/loaded image on the label."""
+    state.image_label.config(text=path)
