@@ -17,6 +17,9 @@ def backpropagation(inputs, weights, biases, targets, learning_rates):
     weights += learning_rates * np.dot(inputs.T, gradient)
     biases += learning_rates * np.sum(gradient)
     
+    weights
+    biases
+    
     return error
 
 

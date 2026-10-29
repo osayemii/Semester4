@@ -12,6 +12,7 @@ class QNetwork(tf.keras.Model):
         self.dense1 = tf.keras.layers.Dense(32, activation='relu')
         self.dense2 = tf.keras.layers.Dense(32, activation='relu')
         self.output_layer = tf.keras.layers.Dense(num_actions)
+
     def call(self, state):
         x = self.dense1(state)
         x = self.dense2(x)
