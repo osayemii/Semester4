@@ -8,12 +8,12 @@
 
 ## Root folders
 
-| Folder | What it contains |
-| --- | --- |
-| `DL/` | Deep learning scripts and experiments: CNNs, RNNs, autoencoders, backpropagation, batch normalization, AlexNet/VGG/LeNet examples, and RL-style ANN work. |
-| `ML/` | Machine learning exercises: EDA, regression, classification, clustering, dimensionality reduction, inference tests, notebooks, and datasets. |
-| `NLP/` | NLP experiments: sentiment analysis, aspect extraction, POS tagging, entity linking, feature extraction, and text classifiers. |
-| `missKene_python/` | Main Python coursework folder: fundamentals, assignments, data processing, visualization, Flask apps, Tkinter GUIs, and web scraping. |
+| Folder | Stack | What it contains |
+| --- | --- | --- |
+| `DL/` | Python, NumPy, deep learning frameworks | Deep learning scripts and experiments: CNNs, RNNs, autoencoders, backpropagation, batch normalization, AlexNet/VGG/LeNet examples, and RL-style ANN work. |
+| `ML/` | Python, pandas, scikit-learn, matplotlib, Jupyter | Machine learning exercises: EDA, regression, classification, clustering, dimensionality reduction, inference tests, notebooks, and datasets. |
+| `NLP/` | Python, spaCy, NLTK, scikit-learn, VADER | NLP experiments: sentiment analysis, aspect extraction, POS tagging, entity linking, feature extraction, and text classifiers. |
+| `missKene_python/` | Python, pandas, matplotlib, Flask, Tkinter, BeautifulSoup/Scrapy | Main Python coursework folder: fundamentals, assignments, data processing, visualization, Flask apps, Tkinter GUIs, and web scraping. |
 
 Only root folders are listed. Generated caches, package folders, editor settings, and other non-personal folders are omitted.
 
