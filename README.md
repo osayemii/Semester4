@@ -1,6 +1,6 @@
 # Semester4
 
-**Bio:** Semester 4 programming coursework covering Python fundamentals, data processing, visualization, Flask web apps, Tkinter GUIs, machine learning, deep learning, and NLP.
+**Bio:** Aptech Semester 4 programming coursework covering Python fundamentals, data processing, visualization, Flask web apps, Tkinter GUIs, machine learning, deep learning, and NLP.
 
 **Description:** Coursework repository organized by subject area: `DL`, `ML`, `NLP`, and `missKene_python`.
 
