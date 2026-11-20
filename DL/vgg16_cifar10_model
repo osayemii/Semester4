@@ -1,0 +1,119 @@
+import tensorflow as tf
+
+from tensorflow.keras import layers, models
+
+# Adam optimizer updates and model weights during training
+from tensorflow.keras.optimizers import Adam
+
+# import the pre-defined VGG16 architecture
+from tensorflow.keras.applications import VGG16
+
+# Tensorflow Datatsets provides ready-made datasets - including CIFAR-10
+import tensorflow_datasets as tfds
+
+
+# Load the CIFAR-10 dataset
+dataset, info = tfds.load(
+    'cifar10',
+    as_supervised=True,
+    with_info=True
+)
+
+
+# Split the dataset into training and testing
+train_dataset = dataset['train']
+test_dataset = dataset['test']
+
+# Define the model parameters
+# CIFAR-10 images: 32 pixels high, 32 pixels wide and its RGB
+input_shape = (32, 32, 3)
+
+# CIFAR-10 has 10 image categories
+num_classes = info.features['label'].num_classes
+
+# Te model processes 32 images in each training batch
+batch_size = 32
+
+# Preprocess the dataset
+def preprocess_image(image, label):
+    
+    # ensures all images have the required dimensions
+    image = tf.image.resize(
+        image,
+        (input_shape[0], input_shape[1])
+    )
+    
+    # normalize: convert pixel value into float32 and divide by 255
+    image = tf.cast(image, tf.float32) / 255.0
+    
+    # convert the classes into one-hot encoding
+    label = tf.one_hot(label, num_classes)
+    
+    return image, label
+
+
+# Apply preprocessing to training data
+train_dataset = (
+    train_dataset
+    .map(preprocess_image)
+    .shuffle(1000)
+    .batch(batch_size)
+)
+
+# Apply preprocessing to testing dataset
+test_dataset = (
+    test_dataset
+    .map(preprocess_image)
+    .batch(batch_size)
+)
+
+# Create the VGG16 base model
+base_model = VGG16(
+    weights=None,
+    include_top=False,
+    input_shape=input_shape
+)
+
+# Build te complete classification model
+model = models.Sequential()
+
+# This extracts importatnt features from the input images
+model.add(base_model)
+
+# Flatten layer
+model.add(layers.Flatten())
+
+# First fully connected layer
+model.add(layers.Dense(
+    4096,
+    activation='relu'
+))
+
+# Second fully connected layer
+model.add(layers.Dense(
+    4096,
+    activation='relu'
+))
+
+# Output layer
+model.add(layers.Dense(
+    num_classes,
+    activation='softmax'
+))
+
+# Compile the model
+model.compile(
+    optimizer=Adam(learning_rate=0.001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Train the model
+model.fit(
+    train_dataset,
+    epochs=10,
+    validation_data=test_dataset
+)
+
+# Save the model
+model.save('vgg16_cifar10_model.h5')
